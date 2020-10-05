@@ -5,6 +5,8 @@ const scoreH1 = document.querySelector('h1')
 const scoreEl = document.querySelector('#scoreEl')
 const startGameBtn = document.querySelector('#startGameBtn')
 const modalEl = document.querySelector('#modalEl')
+const changelogEl = document.querySelector('#changelog')
+const changelogListEl = document.querySelector('#changelogList')
 
 document.body.oncontextmenu = () => { return !1 }
 
@@ -73,14 +75,14 @@ let globalSpeed = 1
 const player = new MovingEntity(0, 0, 15, "white", 0, 5)
 const projectiles = []
 const enemies = []
-let enemySpawnTimer = 500
-let enemySpeed = 60
+const enemySpawnTimer = 500
+const enemySpeed = 75
 const keyboard = new Set()
 let score = 0
 
 function spawnEnemy() {
   return setInterval(() => {
-    const radius = Math.random() * (30 - 4) + 4
+    const radius = Math.random() * (30 - 10 - globalSpeed) + 10 + globalSpeed
     let x = Math.random() < 0.5 ? -ctx.getTransform().e - radius : ctx.getTransform().e + radius
     let y = Math.random() < 0.5 ? -ctx.getTransform().f - radius : ctx.getTransform().f + radius
     if (Math.random() < 0.5) {
@@ -210,12 +212,11 @@ function animate() {
     const angle = Math.atan2(-enemy.y + player.y, -enemy.x + player.x)
     if (angle < -Math.PI / 2 && enemy.angle > Math.PI / 2) enemy.angle -= Math.PI * 2
     if (angle > Math.PI / 2 && enemy.angle < -Math.PI / 2) enemy.angle += Math.PI * 2
-    if (distanceEnemyPlayer < 400 * enemy.radius) {
-      if (enemy.angle < angle) {
-        enemy.angle += 0.005 * enemy.speed
-      } else if (enemy.angle > angle) {
-        enemy.angle -= 0.005 * enemy.speed
-      }
+    const correction = enemy.radius < 10 ? 0.001 : 0.005
+    if (enemy.angle < angle) {
+      enemy.angle += correction * enemy.speed
+    } else if (enemy.angle > angle) {
+      enemy.angle -= correction * enemy.speed
     }
     if (
       enemy.x + enemy.radius + 1 < - ctx.getTransform().e ||
@@ -265,4 +266,14 @@ startGameBtn.addEventListener('click', () => {
   i1 = spawnEnemy()
   i2 = spawnEnemy()
   modalEl.style.display = 'none'
+})
+
+changelogEl.addEventListener('click', () => {
+  changelogListEl.style.display = 'flex'
+  modalEl.style.display = 'none'
+})
+
+changelogListEl.addEventListener('click', () => {
+  changelogListEl.style.display = 'none'
+  modalEl.style.display = 'flex'
 })
