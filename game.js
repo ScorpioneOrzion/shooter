@@ -68,14 +68,13 @@ class Vector {
   }
 }
 
-let gameEnd = true
 let reload = 0
 let globalSpeed = 1
 const player = new MovingEntity(0, 0, 15, "white", 0, 5)
 const projectiles = []
 const enemies = []
-const enemySpawnTimer = 500
-const enemySpeed = 60
+let enemySpawnTimer = 500
+let enemySpeed = 60
 const keyboard = new Set()
 let score = 0
 
@@ -255,6 +254,8 @@ startGameBtn.addEventListener('click', () => {
     clearInterval(i2)
   }
 
+  globalSpeed = 1
+  reload = 0
   score = 0
   player.x = 0
   player.y = 0
