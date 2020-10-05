@@ -36,8 +36,8 @@ class MovingEntity extends Entity {
   }
 
   update() {
-    this.x += Math.cos(this.angle) * this.speed * globalSpeed2
-    this.y += Math.sin(this.angle) * this.speed * globalSpeed2
+    this.x += Math.cos(this.angle) * this.speed * globalSpeed
+    this.y += Math.sin(this.angle) * this.speed * globalSpeed
   }
 }
 
@@ -69,7 +69,7 @@ class Vector {
 }
 
 let reload = 0
-let globalSpeed2 = 1
+let globalSpeed = 1
 const player = new MovingEntity(0, 0, 15, "white", 0, 5)
 const projectiles = []
 const enemies = []
@@ -110,7 +110,7 @@ window.addEventListener('click', event => {
 let animationId
 function animate() {
   animationId = requestAnimationFrame(animate)
-  reload = Math.max(0, reload - 0.1 * globalSpeed2)
+  reload = Math.max(0, reload - 0.1 * globalSpeed)
   if (keyboard.has('mouse') && reload == 0) {
     const angle = Math.atan2(-player.y + mouse.y - ctx.getTransform().f, -player.x + mouse.x - ctx.getTransform().e)
     projectiles.push(new MovingEntity(player.x, player.y, 5, "white", angle, 8))
@@ -119,7 +119,7 @@ function animate() {
 
   scoreEl.innerHTML = score
   scoreH1.innerHTML = score
-  globalSpeed2 *= 1.001
+  globalSpeed *= 1.001
   clear()
 
   const target = new Vector(0, 0)
@@ -254,7 +254,7 @@ startGameBtn.addEventListener('click', () => {
     clearInterval(i2)
   }
 
-  globalSpeed2 = 1
+  globalSpeed = 1
   reload = 0
   score = 0
   player.x = 0
